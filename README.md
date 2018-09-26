@@ -1,7 +1,7 @@
 # ProjetoPoo
 
 
-Requisitos do sistema da lanchonete
+Requisitos do sistema da lanchonete:
 
 RF01- O sistema deve permitir o cadastramento de produtos incluindo o seu código(identificador), nome, descrição, preço (por kg) e peso. 
 
