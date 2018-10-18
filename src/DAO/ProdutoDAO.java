@@ -6,17 +6,9 @@ import java.util.ArrayList;
 public class ProdutoDAO implements ProdutoDAOBridge {
 
     private ArrayList<Produto> produtos = new ArrayList<>();
-    private static ProdutoDAO instancia = null;
 
-    private ProdutoDAO() {
+    public ProdutoDAO() {
 
-    }
-
-    public static ProdutoDAO GetInstancia() {
-        if (instancia == null) {
-            instancia = new ProdutoDAO();
-        }
-        return instancia;
     }
 
     @Override

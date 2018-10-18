@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Produto;
-import DAO.ProdutoDAO;
 import DAO.ProdutoDAOBridge;
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ public class ProdutoController {
     private ProdutoDAOBridge interfaceProduto;
 
     public ProdutoController() {
-        this.interfaceProduto = ProdutoDAO.GetInstancia();
+        this.interfaceProduto = Singleton.GetInstanciaProduto(); //talvez implementar factory pra cá e singleton pra outro lugar (no 2ºGQ)
     }
 
     public void CadastrarProduto(Produto p) {

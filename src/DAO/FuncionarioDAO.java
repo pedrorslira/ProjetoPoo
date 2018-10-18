@@ -7,17 +7,9 @@ import java.util.ArrayList;
 public class FuncionarioDAO implements FuncionarioDAOBridge {
 
     private ArrayList<Funcionario> funcionarios = new ArrayList<>();
-    private static FuncionarioDAO instancia = null;
+    
+    public FuncionarioDAO() {
 
-    private FuncionarioDAO() {
-
-    }
-
-    public static FuncionarioDAO GetInstancia() {
-        if (instancia == null) {
-            instancia = new FuncionarioDAO();
-        }
-        return instancia;
     }
 
     @Override

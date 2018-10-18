@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Funcionario;
-import DAO.FuncionarioDAO;
 import DAO.FuncionarioDAOBridge;
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ public class FuncionarioController {
     private FuncionarioDAOBridge interfaceFuncionario;
 
     public FuncionarioController() {
-        this.interfaceFuncionario = FuncionarioDAO.GetInstancia();
+        this.interfaceFuncionario = Singleton.GetInstanciaFuncionario(); 
     }
 
     public void CadastrarNovoFuncionario(Funcionario f) {

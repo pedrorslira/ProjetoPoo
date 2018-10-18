@@ -1,23 +1,14 @@
 package DAO;
 
 import Model.Pedido;
-import Model.Item;
 import java.util.ArrayList;
 
 public class PedidoDAO implements PedidoDAOBridge {
 
     private ArrayList<Pedido> pedidos = new ArrayList<>();
-    private static PedidoDAO instancia = null;
 
-    private PedidoDAO() {
+    public PedidoDAO() {
 
-    }
-
-    public static PedidoDAO GetInstancia() {
-        if (instancia == null) {
-            instancia = new PedidoDAO();
-        }
-        return instancia;
     }
 
     @Override

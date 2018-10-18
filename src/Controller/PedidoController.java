@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Pedido;
-import DAO.PedidoDAO;
 import DAO.PedidoDAOBridge;
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ public class PedidoController {
     private PedidoDAOBridge interfacePedido;
 
     public PedidoController() {
-        this.interfacePedido = PedidoDAO.GetInstancia();
+        this.interfacePedido = Singleton.GetInstanciaPedido();
     }
 
     public void CadastrarPedido(Pedido p) {

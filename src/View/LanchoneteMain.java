@@ -46,3 +46,11 @@ public class LanchoneteMain {
         } while (op != 4);
     }
 }
+
+/*O QUE FALTA (2º GQ): 
+1- Implementar Factory Method
+2- Implementar mais 2 padrões de projeto
+3-SE DER TEMPO (tem que dar): Implementar interfaces para as views (menu,cadastrar,remover,etc) e cada view vai implementar os métodos dessa interface (override)
+4-ACHO que LanchoneteMain fica fora de todos os packages do MVC
+5-Remover o Herobrine
+*/
