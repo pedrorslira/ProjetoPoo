@@ -1,5 +1,6 @@
 package Controller;
 
+import DAO.Singleton;
 import Model.Funcionario;
 import DAO.FuncionarioDAOBridge;
 import java.util.ArrayList;
