@@ -1,4 +1,4 @@
-package Model;
+package Lanchonete.Model;
 
 import java.util.Date;
 import java.util.ArrayList;

@@ -1,6 +1,10 @@
-package View;
+package Lanchonete;
 
-import Model.Administrador;
+import Lanchonete.Model.Administrador;
+import Lanchonete.View.FuncionarioView;
+import Lanchonete.View.PedidoView;
+import Lanchonete.View.ProdutoView;
+
 import java.util.Scanner;
 
 public class LanchoneteMain {
@@ -48,9 +52,10 @@ public class LanchoneteMain {
 }
 
 /*O QUE FALTA (2º GQ): 
-1- Implementar Factory Method
-2- Implementar mais 2 padrões de projeto (dar uma olhada no builder (pro administrador) e no decorator)
-3-SE DER TEMPO (tem que dar): Implementar interfaces para as views (menu,cadastrar,remover,etc) e cada view vai implementar os métodos dessa interface (override)
-4-ACHO que LanchoneteMain fica fora de todos os packages do MVC
-5-Remover o Herobrine
+1- Implementar Factory Method ///////////DONE 
+2-ACHO que LanchoneteMain fica fora de todos os packages do MVC /////////////DONE 
+3- Implementar mais 2 padrões de projeto (dar uma olhada no builder (pro administrador) e no decorator)
+4-Fazer toda a parte de arquivos
+5-SE DER TEMPO (tem que dar): Implementar interfaces para as views (menu,cadastrar,remover,etc) e cada view vai implementar os métodos dessa interface (override)
+6-Remover o Herobrine
 */

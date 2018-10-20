@@ -1,16 +1,15 @@
-package Controller;
+package Lanchonete.Controller;
 
-import DAO.Singleton;
-import Model.Produto;
-import DAO.ProdutoDAOBridge;
+import Lanchonete.Model.Produto;
 import java.util.ArrayList;
+import Lanchonete.DAO.ProdutoBridge;
 
 public class ProdutoController {
 
-    private ProdutoDAOBridge interfaceProduto;
+    private ProdutoBridge interfaceProduto;
 
-    public ProdutoController() {
-        this.interfaceProduto = Singleton.GetInstanciaProduto(); //talvez implementar factory pra cá e singleton pra outro lugar (no 2ºGQ)
+    public ProdutoController(int tipo) {
+        this.interfaceProduto = ProdutoFactory.TipoArmazenamento(tipo); //talvez implementar factory pra cá e singleton pra outro lugar (no 2ºGQ)
     }
 
     public void CadastrarProduto(Produto p) {

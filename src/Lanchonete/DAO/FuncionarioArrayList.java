@@ -1,13 +1,13 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Funcionario;
+import Lanchonete.Model.Funcionario;
 
 import java.util.ArrayList;
 
-public class FuncionarioArrayList implements FuncionarioDAOBridge {
+public class FuncionarioArrayList implements FuncionarioBridge {
 
     private ArrayList<Funcionario> funcionarios = new ArrayList<>();
-    
+
     public FuncionarioArrayList() {
 
     }

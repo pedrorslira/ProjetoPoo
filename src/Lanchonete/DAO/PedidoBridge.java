@@ -1,9 +1,9 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Pedido;
+import Lanchonete.Model.Pedido;
 import java.util.ArrayList;
 
-public interface PedidoDAOBridge {
+public interface PedidoBridge {
 
     public void Efetuar(Pedido p);
 

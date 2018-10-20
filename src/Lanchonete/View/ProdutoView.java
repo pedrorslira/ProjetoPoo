@@ -1,16 +1,16 @@
-package View;
+package Lanchonete.View;
 
-import Controller.ProdutoController;
-import Model.Produto;
-import Model.Funcionario;
-import Controller.FuncionarioController;
+import Lanchonete.Controller.ProdutoController;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Produto;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProdutoView {
 
-    ProdutoController controller = new ProdutoController();
-    FuncionarioController controllerFuncionario = new FuncionarioController();
+    ProdutoController controller = new ProdutoController(1);
+    FuncionarioController controllerFuncionario = new FuncionarioController(1);
 
     public void MenuProduto() {
         Scanner in = new Scanner(System.in);

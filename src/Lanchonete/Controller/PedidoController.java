@@ -1,16 +1,15 @@
-package Controller;
+package Lanchonete.Controller;
 
-import DAO.Singleton;
-import Model.Pedido;
-import DAO.PedidoDAOBridge;
+import Lanchonete.Model.Pedido;
 import java.util.ArrayList;
+import Lanchonete.DAO.PedidoBridge;
 
 public class PedidoController {
 
-    private PedidoDAOBridge interfacePedido;
+    private PedidoBridge interfacePedido;
 
-    public PedidoController() {
-        this.interfacePedido = Singleton.GetInstanciaPedido();
+    public PedidoController(int tipo) {
+        this.interfacePedido = PedidoFactory.TipoArmazenamento(tipo);
     }
 
     public void CadastrarPedido(Pedido p) {

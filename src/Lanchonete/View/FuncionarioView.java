@@ -1,13 +1,13 @@
-package View;
+package Lanchonete.View;
 
-import Controller.FuncionarioController;
-import Model.Funcionario;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FuncionarioView {
 
-    FuncionarioController controller = new FuncionarioController();
+    FuncionarioController controller = new FuncionarioController(1);
 
     public void MenuFuncionario() {
         Scanner in = new Scanner(System.in);

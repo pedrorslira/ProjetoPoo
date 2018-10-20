@@ -1,9 +1,9 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Produto;
+import Lanchonete.Model.Produto;
 import java.util.ArrayList;
 
-public class ProdutoArrayList implements ProdutoDAOBridge {
+public class ProdutoArrayList implements ProdutoBridge {
 
     private ArrayList<Produto> produtos = new ArrayList<>();
 

@@ -1,9 +1,9 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Produto;
+import Lanchonete.Model.Produto;
 import java.util.ArrayList;
 
-public interface ProdutoDAOBridge {
+public interface ProdutoBridge {
 
     public void Cadastrar(Produto p);
 

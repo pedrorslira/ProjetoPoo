@@ -1,16 +1,15 @@
-package Controller;
+package Lanchonete.Controller;
 
-import DAO.Singleton;
-import Model.Funcionario;
-import DAO.FuncionarioDAOBridge;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
+import Lanchonete.DAO.FuncionarioBridge;
 
 public class FuncionarioController {
 
-    private FuncionarioDAOBridge interfaceFuncionario;
+    private FuncionarioBridge interfaceFuncionario;
 
-    public FuncionarioController() {
-        this.interfaceFuncionario = Singleton.GetInstanciaFuncionario(); 
+    public FuncionarioController(int tipo) {
+        this.interfaceFuncionario = FuncionarioFactory.TipoArmazenamento(tipo);
     }
 
     public void CadastrarNovoFuncionario(Funcionario f) {

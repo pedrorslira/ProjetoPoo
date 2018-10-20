@@ -1,23 +1,23 @@
-package View;
+package Lanchonete.View;
 
-import Controller.PedidoController;
-import Model.Pedido;
-import Model.Produto;
-import Model.Funcionario;
-import Model.Item;
-import Model.Status;
-import Model.FormaDePagamento;
-import Controller.ProdutoController;
-import Controller.FuncionarioController;
+import Lanchonete.Controller.PedidoController;
+import Lanchonete.Controller.ProdutoController;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Pedido;
+import Lanchonete.Model.Produto;
+import Lanchonete.Model.Funcionario;
+import Lanchonete.Model.Item;
+import Lanchonete.Model.Status;
+import Lanchonete.Model.FormaDePagamento;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class PedidoView {
 
-    PedidoController controllerPedido = new PedidoController();
-    ProdutoController controllerProduto = new ProdutoController();
-    FuncionarioController controllerFuncionario = new FuncionarioController();
+    PedidoController controllerPedido = new PedidoController(1);
+    ProdutoController controllerProduto = new ProdutoController(1);
+    FuncionarioController controllerFuncionario = new FuncionarioController(1);
 
     public void MenuPedido() {
         Scanner in = new Scanner(System.in);

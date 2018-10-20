@@ -1,9 +1,9 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Funcionario;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
 
-public interface FuncionarioDAOBridge {
+public interface FuncionarioBridge {
 
     public void CadastrarFuncionario(Funcionario f);
 

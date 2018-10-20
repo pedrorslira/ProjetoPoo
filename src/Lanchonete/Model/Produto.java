@@ -1,4 +1,4 @@
-package Model;
+package Lanchonete.Model;
 
 public class Produto {
 
