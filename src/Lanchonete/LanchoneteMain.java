@@ -55,7 +55,7 @@ public class LanchoneteMain {
 
 /*O QUE FALTA:
 1-Implementar mais 1 padrão de projeto 
-3-Atualizar a UML
-4-Matar moscas com um canhão
-5-Remover o Herobrine
+2-Atualizar a UML
+3-Matar moscas com um canhão
+4-Remover o Herobrine
  */

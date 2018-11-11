@@ -55,15 +55,4 @@ public class Produto {
     public void setPeso(double peso) {
         this.peso = peso;
     }
-
-    public double NovoPreco() {
-        double aux;
-
-        if (peso > 1.0) {
-            aux = peso - 1.0;
-            aux /= 0.1;
-            preco += (aux * 0.15);
-        }
-        return preco;
-    }
 }
