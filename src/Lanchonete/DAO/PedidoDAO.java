@@ -1,29 +1,29 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Pedido;
-import Model.Item;
+import Lanchonete.Model.Pedido;
 import java.util.ArrayList;
 
-public class PedidoDAO implements PedidoDAOBridge {
+public class PedidoDAO implements PedidoBridge {
 
     private ArrayList<Pedido> pedidos = new ArrayList<>();
-    private static PedidoDAO instancia = null;
+
+    private static PedidoDAO instancia_pedido = null;
 
     private PedidoDAO() {
 
     }
 
-    public static PedidoDAO GetInstancia() {
-        if (instancia == null) {
-            instancia = new PedidoDAO();
+    public static PedidoDAO GetInstanciaPedido() {
+        if (instancia_pedido == null) {
+            instancia_pedido = new PedidoDAO();
         }
-        return instancia;
+        return instancia_pedido;
     }
 
     @Override
-    public Pedido Consultar(int cod) {
+    public Pedido Consultar(String cod) {
         for (Pedido p : pedidos) {
-            if (p.getCodigo() == cod) {
+            if (p.getCodigo().equals(cod)) {
                 return p;
             }
         }
@@ -36,7 +36,7 @@ public class PedidoDAO implements PedidoDAOBridge {
     }
 
     @Override
-    public int Cancelar(int cod) {
+    public int Cancelar(String cod) {
         Pedido p = Consultar(cod);
         if (p != null) {
             pedidos.remove(p);
@@ -47,7 +47,7 @@ public class PedidoDAO implements PedidoDAOBridge {
     }
 
     @Override
-    public void Alterar(int cod, Pedido novoP) {
+    public void Alterar(String cod, Pedido novoP) {
         this.Cancelar(cod);
         this.Efetuar(novoP);
     }

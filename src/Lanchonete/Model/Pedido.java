@@ -1,29 +1,27 @@
-package Model;
+package Lanchonete.Model;
 
 import java.util.Date;
 import java.util.ArrayList;
 
 public class Pedido {
 
-    private int codigo;
+    private String codigo;
     private Date data;
     private Status status;
     private FormaDePagamento formapgto;
     private ArrayList<Item> itens;
 
-    public Pedido(int codigo, Date data, Status status, FormaDePagamento formapgto) {
-        this.codigo = codigo;
+    public Pedido(Date data, FormaDePagamento formapgto) {
         this.data = data;
-        this.status = status;
         this.formapgto = formapgto;
         this.itens = new ArrayList<>();
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -69,5 +67,16 @@ public class Pedido {
             preco_t += item.PrecoTotalItem();
         }
         return preco_t;
+    }
+
+    public String NovoCodigo() {
+        String[] carct = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "x", "w", "y", "z"};
+        String cod = "";
+
+        for (int x = 0; x < 6; x++) {
+            int j = (int) (Math.random() * carct.length);
+            cod += carct[j];
+        }
+        return cod;
     }
 }

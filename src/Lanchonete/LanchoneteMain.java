@@ -1,18 +1,21 @@
-package View;
+package Lanchonete;
 
-import Model.Administrador;
+import Lanchonete.Model.Administrador;
+import Lanchonete.View.FuncionarioView;
+import Lanchonete.View.ProdutoView;
+import Lanchonete.View.PedidoView;
+
 import java.util.Scanner;
+import Lanchonete.View.Telas;
 
 public class LanchoneteMain {
 
     public static void main(String[] args) {
-        String input, nome = "Big Boss", cpf = "96342158746";
-        Administrador admin = new Administrador(nome, cpf);
-        ProdutoView produto = new ProdutoView();
-        FuncionarioView funcionario = new FuncionarioView();
-        PedidoView pedido = new PedidoView();
-        Scanner in = new Scanner(System.in);
         int op;
+        String input;
+        Scanner in = new Scanner(System.in);
+        Telas interface_views;
+        Administrador admin = new Administrador();
         do {
             System.out.println("\t\t\t\t--------Menu Principal--------");
             System.out.println("Informe o módulo que deseja acessar: ");
@@ -23,7 +26,8 @@ public class LanchoneteMain {
             op = in.nextInt();
             switch (op) {
                 case 1:
-                    produto.MenuProduto();
+                    interface_views = new ProdutoView();
+                    interface_views.Menu();
                     break;
                 case 2:
                     do {
@@ -35,10 +39,12 @@ public class LanchoneteMain {
                         input = in.next();
                     } while (input.equals(admin.getSenha()) == false);
                     System.out.println("Bem Vindo " + admin.getNome());
-                    funcionario.MenuFuncionario();
+                    interface_views = new FuncionarioView();
+                    interface_views.Menu();
                     break;
                 case 3:
-                    pedido.MenuPedido();
+                    interface_views = new PedidoView();
+                    interface_views.Menu();
                     break;
                 default:
                     break;
@@ -46,3 +52,10 @@ public class LanchoneteMain {
         } while (op != 4);
     }
 }
+
+/*O QUE FALTA:
+1-Implementar mais 1 padrão de projeto 
+3-Atualizar a UML
+4-Matar moscas com um canhão
+5-Remover o Herobrine
+ */

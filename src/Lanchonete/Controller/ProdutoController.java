@@ -1,31 +1,30 @@
-package Controller;
+package Lanchonete.Controller;
 
-import Model.Produto;
-import DAO.ProdutoDAO;
-import DAO.ProdutoDAOBridge;
+import Lanchonete.Model.Produto;
 import java.util.ArrayList;
+import Lanchonete.DAO.ProdutoBridge;
 
 public class ProdutoController {
 
-    private ProdutoDAOBridge interfaceProduto;
+    private ProdutoBridge interfaceProduto;
 
     public ProdutoController() {
-        this.interfaceProduto = ProdutoDAO.GetInstancia();
+        this.interfaceProduto = ProdutoFactory.TipoArmazenamento(1);
     }
 
     public void CadastrarProduto(Produto p) {
         this.interfaceProduto.Cadastrar(p);
     }
 
-    public int RemoverProduto(int cod) {
+    public int RemoverProduto(String cod) {
         return this.interfaceProduto.Remover(cod);
     }
 
-    public Produto ConsultarProduto(int cod) {
+    public Produto ConsultarProduto(String cod) {
         return this.interfaceProduto.Consultar(cod);
     }
 
-    public void AlterarProduto(int cod, Produto novoP) {
+    public void AlterarProduto(String cod, Produto novoP) {
         this.interfaceProduto.Alterar(cod, novoP);
     }
 
@@ -37,7 +36,7 @@ public class ProdutoController {
         return this.interfaceProduto.GetQuantidadeTotal();
     }
 
-    public int ConsultarQtdProduto(int cod) {
+    public int ConsultarQtdProduto(String cod) {
         return this.interfaceProduto.ConsultarQtdProduto(cod);
     }
 }

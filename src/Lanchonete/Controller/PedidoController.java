@@ -1,31 +1,30 @@
-package Controller;
+package Lanchonete.Controller;
 
-import Model.Pedido;
-import DAO.PedidoDAO;
-import DAO.PedidoDAOBridge;
+import Lanchonete.Model.Pedido;
 import java.util.ArrayList;
+import Lanchonete.DAO.PedidoBridge;
 
 public class PedidoController {
 
-    private PedidoDAOBridge interfacePedido;
+    private PedidoBridge interfacePedido;
 
     public PedidoController() {
-        this.interfacePedido = PedidoDAO.GetInstancia();
+        this.interfacePedido = PedidoFactory.TipoArmazenamento(1);
     }
 
     public void CadastrarPedido(Pedido p) {
         this.interfacePedido.Efetuar(p);
     }
 
-    public int RemoverPedido(int cod) {
+    public int RemoverPedido(String cod) {
         return this.interfacePedido.Cancelar(cod);
     }
 
-    public Pedido ConsultarPedido(int cod) {
+    public Pedido ConsultarPedido(String cod) {
         return this.interfacePedido.Consultar(cod);
     }
 
-    public void AlterarPedido(int cod, Pedido novoP) {
+    public void AlterarPedido(String cod, Pedido novoP) {
         this.interfacePedido.Alterar(cod, novoP);
     }
 

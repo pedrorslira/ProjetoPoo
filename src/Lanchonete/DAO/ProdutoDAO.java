@@ -1,28 +1,29 @@
-package DAO;
+package Lanchonete.DAO;
 
-import Model.Produto;
+import Lanchonete.Model.Produto;
 import java.util.ArrayList;
 
-public class ProdutoDAO implements ProdutoDAOBridge {
+public class ProdutoDAO implements ProdutoBridge {
 
     private ArrayList<Produto> produtos = new ArrayList<>();
-    private static ProdutoDAO instancia = null;
+
+    private static ProdutoDAO instancia_produto = null;
 
     private ProdutoDAO() {
 
     }
 
-    public static ProdutoDAO GetInstancia() {
-        if (instancia == null) {
-            instancia = new ProdutoDAO();
+    public static ProdutoDAO GetInstanciaProduto() {
+        if (instancia_produto == null) {
+            instancia_produto = new ProdutoDAO();
         }
-        return instancia;
+        return instancia_produto;
     }
 
     @Override
-    public Produto Consultar(int cod) {
+    public Produto Consultar(String cod) {
         for (Produto p : produtos) {
-            if (p.getCodigo() == cod) {
+            if (p.getCodigo().equals(cod)) {
                 return p;
             }
         }
@@ -35,7 +36,7 @@ public class ProdutoDAO implements ProdutoDAOBridge {
     }
 
     @Override
-    public int Remover(int cod) {
+    public int Remover(String cod) {
         Produto p = Consultar(cod);
         if (p != null) {
             produtos.remove(p);
@@ -46,7 +47,7 @@ public class ProdutoDAO implements ProdutoDAOBridge {
     }
 
     @Override
-    public void Alterar(int cod, Produto novoP) {
+    public void Alterar(String cod, Produto novoP) {
         this.Remover(cod);
         this.Cadastrar(novoP);
     }
@@ -62,10 +63,10 @@ public class ProdutoDAO implements ProdutoDAOBridge {
     }
 
     @Override
-    public int ConsultarQtdProduto(int cod) {
+    public int ConsultarQtdProduto(String cod) {
         int qtd = 0;
         for (Produto p : produtos) {
-            if (p.getCodigo() == cod) {
+            if (p.getCodigo().equals(cod)) {
                 qtd++;
             }
         }

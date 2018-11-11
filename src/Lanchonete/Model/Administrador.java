@@ -1,12 +1,12 @@
-package Model;
+package Lanchonete.Model;
 
 public class Administrador extends Pessoa {
 
     private String usuario;
     private String senha;
 
-    public Administrador(String nome, String cpf) {
-        super(nome, cpf);
+    public Administrador() {
+        super("Big Boss", "96342158746");
         this.usuario = "admin";
         this.senha = "admin123";
     }

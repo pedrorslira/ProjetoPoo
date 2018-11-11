@@ -1,14 +1,14 @@
-package Model;
+package Lanchonete.Model;
 
 public class Produto {
 
-    private int codigo;
+    private String codigo;
     private String nome;
     private String descricao;
     private double preco;
     private double peso;
 
-    public Produto(int codigo, String nome, String descricao, double preco, double peso) {
+    public Produto(String codigo, String nome, String descricao, double preco, double peso) {
         this.codigo = codigo;
         this.nome = nome;
         this.descricao = descricao;
@@ -16,11 +16,11 @@ public class Produto {
         this.peso = peso;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -56,8 +56,9 @@ public class Produto {
         this.peso = peso;
     }
 
-    public double NovoPreco() { //cálculo do preço baseado no peso. A partir de 1.10 kg,aumentar 0.15 do preço a cada 0.10 kg
+    public double NovoPreco() {
         double aux;
+
         if (peso > 1.0) {
             aux = peso - 1.0;
             aux /= 0.1;

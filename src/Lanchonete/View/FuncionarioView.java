@@ -1,15 +1,16 @@
-package View;
+package Lanchonete.View;
 
-import Controller.FuncionarioController;
-import Model.Funcionario;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FuncionarioView {
+public class FuncionarioView extends Telas {
 
     FuncionarioController controller = new FuncionarioController();
 
-    public void MenuFuncionario() {
+    @Override
+    public void Menu() {
         Scanner in = new Scanner(System.in);
         int op;
         do {
@@ -24,19 +25,19 @@ public class FuncionarioView {
             op = in.nextInt();
             switch (op) {
                 case 1:
-                    this.CadastrarFuncionario();
+                    this.Cadastrar();
                     break;
                 case 2:
-                    this.RemoverFuncionario();
+                    this.Remover();
                     break;
                 case 3:
-                    this.ConsultarFuncionario();
+                    this.Consultar();
                     break;
                 case 4:
-                    this.AlterarFuncionario();
+                    this.Alterar();
                     break;
                 case 5:
-                    this.ListarFuncionarios();
+                    this.Listar();
                     break;
                 default:
                     break;
@@ -44,8 +45,8 @@ public class FuncionarioView {
         } while (op != 6);
     }
 
-    public void CadastrarFuncionario() {
-        int numero;
+    @Override
+    public void Cadastrar() {
         String nome, cpf, endereco;
         double salario;
         Scanner in = new Scanner(System.in);
@@ -53,24 +54,25 @@ public class FuncionarioView {
         nome = in.nextLine();
         System.out.println("Informe o endereço do funcionário");
         endereco = in.nextLine();
-        System.out.println("Informe o numero do funcionário");
-        numero = in.nextInt();
         System.out.println("Informe o cpf do funcionário");
         cpf = in.next();
         System.out.println("Informe o salario do funcionário");
         salario = in.nextDouble();
-        Funcionario f = new Funcionario(numero, endereco, salario, nome, cpf);
-        controller.CadastrarNovoFuncionario(f);
+        Funcionario f = new Funcionario(endereco, salario, nome, cpf);
+        f.setCodigo(f.NovoCodigo()); //randomizar o código do funcionário
+        controller.CadastrarFuncionario(f);
         System.out.println("Funcionário cadastrado com sucesso!");
+        System.out.println("Código do Funcionário: " + f.getCodigo());
     }
 
-    private void RemoverFuncionario() {
+    @Override
+    public void Remover() {
         int retorno;
+        String codigo;
         Scanner in = new Scanner(System.in);
-        int numero;
         System.out.println("Informe o número do funcionário a ser removido do cadastro: ");
-        numero = in.nextInt();
-        retorno = controller.RemoverUmFuncionario(numero);
+        codigo = in.next();
+        retorno = controller.RemoverFuncionario(codigo);
         if (retorno == 0) {
             System.out.println("Funcionário não encontrado");
         } else {
@@ -78,46 +80,35 @@ public class FuncionarioView {
         }
     }
 
-    public void ConsultarFuncionario() {
+    @Override
+    public void Consultar() {
         Scanner in = new Scanner(System.in);
-        int numero, op;
-        String cpf;
+        String codigo;
         Funcionario f;
-        do {
-            System.out.println("Você deseja buscar funcionário por código ou cpf?");
-            System.out.println("1- Número");
-            System.out.println("2- CPF");
-            op = in.nextInt();
-        } while (op < 1 || op > 2);
-        if (op == 1) {
-            System.out.println("Informe o número do funcionário a ser buscado: ");
-            numero = in.nextInt();
-            f = controller.ConsultarUmFuncionario(numero);
-        } else {
-            System.out.println("Informe o cpf do funcionário a ser buscado: ");
-            cpf = in.next();
-            f = controller.ConsultarUmFuncionario(cpf);
-        }
+        System.out.println("Informe o código do funcionário a ser buscado: ");
+        codigo = in.next();
+        f = controller.ConsultarFuncionario(codigo);
         if (f == null) {
             System.out.println("Funcionário não encontrado ");
         } else {
             System.out.println("Nome: " + f.getNome());
-            System.out.println("Numero: " + f.getNumero());
             System.out.println("CPF: " + f.getCpf());
+            System.out.println("Código: " + f.getCodigo());
             System.out.println("Endereço: " + f.getEndereco());
             System.out.println("Salário: " + f.getSalario());
+            System.out.println("Vendas Realizadas: " + f.getQtdVendas());
         }
     }
 
-    private void AlterarFuncionario() {
+    @Override
+    public void Alterar() {
         Scanner in = new Scanner(System.in);
-        int numero, novonumero;
-        String novonome, novoendereco, novocpf;
+        String codigo, novonome, novoendereco, novocpf;
         double novosalario;
         Funcionario novof, antigof;
-        System.out.println("Informe o número do funcionário a ser modificado: ");
-        numero = in.nextInt();
-        antigof = controller.ConsultarUmFuncionario(numero);
+        System.out.println("Informe o código do funcionário a ser modificado: ");
+        codigo = in.next();
+        antigof = controller.ConsultarFuncionario(codigo);
         if (antigof == null) {
             System.out.println("Funcionário não encontrado");
         } else {
@@ -125,29 +116,31 @@ public class FuncionarioView {
             novonome = in.nextLine();
             System.out.println("Informe o novo endereço desse funcionário: ");
             novoendereco = in.nextLine();
-            System.out.println("Informe o novo número desse funcionário: ");
-            novonumero = in.nextInt();
             System.out.println("Informe o novo cpf desse funcionário: ");
             novocpf = in.next();
             System.out.println("Informe o novo salário desse funcionário: ");
             novosalario = in.nextDouble();
-            novof = new Funcionario(novonumero, novoendereco, novosalario, novonome, novocpf);
-            controller.AlterarDadosFuncionario(numero, novof);
+            novof = new Funcionario(novoendereco, novosalario, novonome, novocpf);
+            novof.setCodigo(codigo);
+            controller.AlterarFuncionario(codigo, novof);
             System.out.println("Funcionário alterado com sucesso!");
         }
 
     }
 
-    private void ListarFuncionarios() {
-        ArrayList<Funcionario> funcionarios = controller.ListarFuncionariosNoCadastro();
+    @Override
+    public void Listar() {
+        ArrayList<Funcionario> funcionarios = controller.ListarFuncionarios();
         if (funcionarios.isEmpty() == true) {
             System.out.println("Nenhum funcionário cadastrado");
         } else {
             for (Funcionario f : funcionarios) {
                 System.out.println("Nome: " + f.getNome());
-                System.out.println("Número: " + f.getNumero());
+                System.out.println("CPF: " + f.getCpf());
+                System.out.println("Código: " + f.getCodigo());
                 System.out.println("Endereço: " + f.getEndereco());
                 System.out.println("Salário: " + f.getSalario());
+                System.out.println("Vendas Realizadas: " + f.getQtdVendas());
             }
         }
     }

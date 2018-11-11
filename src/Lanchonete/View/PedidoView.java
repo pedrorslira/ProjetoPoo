@@ -1,25 +1,28 @@
-package View;
+package Lanchonete.View;
 
-import Controller.PedidoController;
-import Model.Pedido;
-import Model.Produto;
-import Model.Funcionario;
-import Model.Item;
-import Model.Status;
-import Model.FormaDePagamento;
-import Controller.ProdutoController;
-import Controller.FuncionarioController;
+import Lanchonete.Controller.PedidoController;
+import Lanchonete.Controller.ProdutoController;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Pedido;
+import Lanchonete.Model.Produto;
+import Lanchonete.Model.Funcionario;
+import Lanchonete.Model.Item;
+import Lanchonete.Model.FormaDePagamento;
+import Lanchonete.Model.StatusAlterado;
+import Lanchonete.Model.StatusEfetuado;
+import Lanchonete.Model.StatusNovo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class PedidoView {
+public class PedidoView extends Telas {
 
     PedidoController controllerPedido = new PedidoController();
     ProdutoController controllerProduto = new ProdutoController();
     FuncionarioController controllerFuncionario = new FuncionarioController();
 
-    public void MenuPedido() {
+    @Override
+    public void Menu() {
         Scanner in = new Scanner(System.in);
         int op;
         do {
@@ -34,19 +37,19 @@ public class PedidoView {
             op = in.nextInt();
             switch (op) {
                 case 1:
-                    this.EfetuarPedido();
+                    this.Cadastrar();
                     break;
                 case 2:
-                    this.CancelarPedido();
+                    this.Remover();
                     break;
                 case 3:
-                    this.ConsultarPedido();
+                    this.Consultar();
                     break;
                 case 4:
-                    this.AlterarPedido();
+                    this.Alterar();
                     break;
                 case 5:
-                    this.ListarPedidos();
+                    this.Listar();
                     break;
                 default:
                     break;
@@ -54,25 +57,27 @@ public class PedidoView {
         } while (op != 6);
     }
 
-    public void EfetuarPedido() {
-        int codigo, codigo_produto, codigo_funcionario, qtd_produto, qtd_produto_total, op, qtd_aux = 0;
+    @Override
+    public void Cadastrar() {
+        int qtd_produto, qtd_produto_total, op, qtd_aux = 0;
+        double salario_func, bonus;
+        String codigo, codigo_produto, codigo_funcionario;
         Date data = new Date();
-        Status status = Status.NAO_INFORMADO;
         FormaDePagamento formapgto = FormaDePagamento.NAO_INFORMADO;
         Item item;
         Funcionario func;
         Produto produto, produto_aux;
-        Pedido p = new Pedido(-1, data, status, formapgto);
+        Pedido p = new Pedido(data, formapgto);
         Scanner in = new Scanner(System.in);
         System.out.println("Informe o código do funcionário responsável pelo atendimento"); //verificar se o funcionário trabalha na lanchonete
-        codigo_funcionario = in.nextInt();
-        func = controllerFuncionario.ConsultarUmFuncionario(codigo_funcionario);
+        codigo_funcionario = in.next();
+        func = controllerFuncionario.ConsultarFuncionario(codigo_funcionario);
         if (func == null) {
             System.out.println("Nenhum funcionário tem esse código");
             return;
-        }
-        System.out.println("Informe o código do pedido");
-        codigo = in.nextInt();
+        } //se o funcionário trabalhar na lanchonete:
+        p.setStatus(new StatusNovo());
+        System.out.println(p.getStatus().estado());
         do {
             System.out.println("Informe a forma de pagamento: ");
             System.out.println("1- À vista");
@@ -80,7 +85,6 @@ public class PedidoView {
             System.out.println("3- Débito");
             op = in.nextInt();
         } while (op < 1 || op > 3);
-
         switch (op) {
             case 1:
                 formapgto = FormaDePagamento.A_VISTA;
@@ -96,12 +100,12 @@ public class PedidoView {
         }
         do {
             System.out.println("Informe o código do produto a ser adicionado"); //verificar se o produto existe na lanchonete
-            codigo_produto = in.nextInt();
+            codigo_produto = in.next();
             produto = controllerProduto.ConsultarProduto(codigo_produto);
             if (produto == null) {
                 System.out.println("O código do produto informado não existe no sistema");
                 return;
-            }
+            } //se o produto existir na lanchonete:
             do {
                 qtd_produto_total = controllerProduto.ConsultarQtdProduto(codigo_produto);
                 if (qtd_produto_total == 0) {
@@ -113,7 +117,6 @@ public class PedidoView {
                 System.out.println("Informe a quantidade do produto a ser adicionada");
                 qtd_produto = in.nextInt();
             } while (qtd_produto > qtd_produto_total);
-            qtd_produto_total -= qtd_produto;
             item = new Item(qtd_produto);
             do { //adicionar produto em item e retirar o produto do estoque quando ele for levado pelo cliente
                 produto_aux = controllerProduto.ConsultarProduto(codigo_produto);
@@ -128,48 +131,54 @@ public class PedidoView {
             System.out.println("2- Finalizar a Compra");
             op = in.nextInt();
         } while (op == 1);
-        status = Status.EFETUADO;
-        p.setCodigo(codigo);
+        p.setStatus(new StatusEfetuado());
         data = new Date();
         p.setData(data);
-        p.setStatus(status);
         p.setFormapgto(formapgto);
+        p.setCodigo(p.NovoCodigo()); //randomizar o código de pedido
         controllerPedido.CadastrarPedido(p);
-        System.out.println("Pedido realizado com sucesso!");
-        double bonus = p.getPrecoTotal() * 0.02; //bônus de 2% de cada venda no salário do funcionário
-        double salario_func = func.getSalario();
+        p.setStatus(new StatusEfetuado());
+        System.out.println(p.getStatus().estado());
+        codigo = p.getCodigo();
+        System.out.println("Código do Pedido: " + codigo);
+        func.setQtdVendas(func.getQtdVendas() + 1);
+        bonus = p.getPrecoTotal() * 0.02; //bônus de 2% de cada venda no salário do funcionário
+        salario_func = func.getSalario();
         salario_func += bonus;
         func.setSalario(salario_func);
     }
 
-    public void CancelarPedido() {
+    @Override
+    public void Remover() {
         int retorno;
         Scanner in = new Scanner(System.in);
-        int codigo;
+        String codigo;
         System.out.println("Informe o código do pedido a ser cancelado");
-        codigo = in.nextInt();
+        codigo = in.next();
         retorno = controllerPedido.RemoverPedido(codigo);
         if (retorno == 0) {
             System.out.println("Pedido não cadastrado");
         } else {
-            System.out.println("Pedido cancelado com sucesso");
+            System.out.println("Pedido cancelado com sucesso!");
         }
     }
 
-    public void ConsultarPedido() {
+    @Override
+    public void Consultar() {
         Scanner in = new Scanner(System.in);
-        int i = 0, cod;
+        int i = 0;
+        String cod;
         Pedido p;
 
         System.out.println("Informe o código do pedido buscado: ");
-        cod = in.nextInt();
+        cod = in.next();
         p = controllerPedido.ConsultarPedido(cod);
         if (p == null) {
             System.out.println("Produto não encontrado ");
         } else {
             System.out.println("Código: " + p.getCodigo());
             System.out.println("Data: " + p.getData());
-            System.out.println("Status: " + p.getStatus());
+            System.out.println("Status: " + p.getStatus().estado());
             System.out.println("Forma de Pagamento: " + p.getFormapgto());
             System.out.print("\n");
             System.out.println("Compras: ");
@@ -186,19 +195,19 @@ public class PedidoView {
         }
     }
 
-    public void AlterarPedido() {
+    @Override
+    public void Alterar() {
         Scanner in = new Scanner(System.in);
-        int codigo, novocodigo, op;
+        int op;
+        String codigo;
         FormaDePagamento novaforma_pgto;
         Pedido novop, antigop;
         System.out.println("Informe o código do pedido a ser modificado: ");
-        codigo = in.nextInt();
+        codigo = in.next();
         antigop = controllerPedido.ConsultarPedido(codigo);
         if (antigop == null) {
             System.out.println("Pedido não encontrado");
         } else {
-            System.out.println("Informe o novo código do pedido");
-            novocodigo = in.nextInt();
             do {
                 System.out.println("Informe a nova forma de pagamento do pedido");
                 System.out.println("1- À vista");
@@ -217,13 +226,17 @@ public class PedidoView {
                     novaforma_pgto = FormaDePagamento.DEBITO;
                     break;
             }
-            novop = new Pedido(novocodigo, antigop.getData(), antigop.getStatus(), novaforma_pgto);
+            novop = new Pedido(antigop.getData(), novaforma_pgto);
+            novop.setCodigo(codigo);
+            novop.setStatus(new StatusAlterado());
+            System.out.println(novop.getStatus().estado());
             controllerPedido.AlterarPedido(codigo, novop);
-            System.out.println("Pedido alterado com sucesso!");
+
         }
     }
 
-    public void ListarPedidos() {
+    @Override
+    public void Listar() {
         ArrayList<Pedido> pedidos = controllerPedido.ListarPedidos();
         if (pedidos.isEmpty() == true) {
             System.out.println("Nenhum pedido está cadastrado no sistema");
@@ -231,7 +244,7 @@ public class PedidoView {
             for (Pedido p : pedidos) {
                 System.out.println("Código: " + p.getCodigo());
                 System.out.println("Data do Pedido: " + p.getData());
-                System.out.println("Status: " + p.getStatus());
+                System.out.println("Status: " + p.getStatus().estado());
                 System.out.println("Forma de Pagamento: " + p.getFormapgto());
                 for (Item i : p.getItens()) {
                     System.out.println("Nome do Produto: " + i.getProduto().get(0).getNome());

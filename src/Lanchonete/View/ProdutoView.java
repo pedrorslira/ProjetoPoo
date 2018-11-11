@@ -1,25 +1,26 @@
-package View;
+package Lanchonete.View;
 
-import Controller.ProdutoController;
-import Model.Produto;
-import Model.Funcionario;
-import Controller.FuncionarioController;
+import Lanchonete.Controller.ProdutoController;
+import Lanchonete.Controller.FuncionarioController;
+import Lanchonete.Model.Produto;
+import Lanchonete.Model.Funcionario;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ProdutoView {
+public class ProdutoView extends Telas {
 
     ProdutoController controller = new ProdutoController();
     FuncionarioController controllerFuncionario = new FuncionarioController();
 
-    public void MenuProduto() {
+    @Override
+    public void Menu() {
         Scanner in = new Scanner(System.in);
         Funcionario func;
-        int codigo_funcionario;
+        String codigo_funcionario;
         int op;
         System.out.println("Informe o código do funcionário responsável pelo atendimento"); //verificar se o funcionário trabalha na lanchonete
-        codigo_funcionario = in.nextInt();
-        func = controllerFuncionario.ConsultarUmFuncionario(codigo_funcionario);
+        codigo_funcionario = in.next();
+        func = controllerFuncionario.ConsultarFuncionario(codigo_funcionario);
         if (func == null) {
             System.out.println("Nenhum funcionário tem esse código");
             return;
@@ -36,19 +37,19 @@ public class ProdutoView {
             op = in.nextInt();
             switch (op) {
                 case 1:
-                    CadastrarProduto();
+                    Cadastrar();
                     break;
                 case 2:
-                    RemoverProduto();
+                    Remover();
                     break;
                 case 3:
-                    ConsultarProduto();
+                    Consultar();
                     break;
                 case 4:
-                    AlterarProduto();
+                    Alterar();
                     break;
                 case 5:
-                    ListarProdutos();
+                    Listar();
                     break;
                 default:
                     break;
@@ -56,8 +57,9 @@ public class ProdutoView {
         } while (op != 6);
     }
 
-    public void CadastrarProduto() {
-        int codigo;
+    @Override
+    public void Cadastrar() {
+        String codigo;
         String nome, descricao;
         double preco, peso;
         Scanner in = new Scanner(System.in);
@@ -66,7 +68,7 @@ public class ProdutoView {
         System.out.println("Informe a descrição do produto");
         descricao = in.nextLine();
         System.out.println("Informe o código do produto");
-        codigo = in.nextInt();
+        codigo = in.next();
         System.out.println("Informe o preço do produto");
         preco = in.nextDouble();
         System.out.println("Informe o peso do produto (em kg)");
@@ -77,12 +79,13 @@ public class ProdutoView {
         System.out.println("Produto cadastrado com sucesso!");
     }
 
-    private void RemoverProduto() {
+    @Override
+    public void Remover() {
         Scanner in = new Scanner(System.in);
-        int cod;
+        String cod;
         Produto p_consulta;
         System.out.println("Informe o código do produto a ser removido do cadastro: ");
-        cod = in.nextInt();
+        cod = in.next();
         p_consulta = controller.ConsultarProduto(cod);
         controller.RemoverProduto(cod);
         if (p_consulta == null) {
@@ -92,12 +95,13 @@ public class ProdutoView {
         }
     }
 
-    public void ConsultarProduto() {
+    @Override
+    public void Consultar() {
         Scanner in = new Scanner(System.in);
-        int cod;
+        String cod;
         Produto p;
         System.out.println("Informe o código do produto buscado: ");
-        cod = in.nextInt();
+        cod = in.next();
         p = controller.ConsultarProduto(cod);
         if (p == null) {
             System.out.println("Produto não encontrado ");
@@ -110,14 +114,14 @@ public class ProdutoView {
         }
     }
 
-    private void AlterarProduto() {
+    @Override
+    public void Alterar() {
         Scanner in = new Scanner(System.in);
-        int cod, novocod;
-        String novonome, novadesc;
+        String novonome, novadesc, cod, novocod;
         double novopreco, novopeso;
         Produto novop, antigop;
         System.out.println("Informe o código do produto a ser modificado: ");
-        cod = in.nextInt();
+        cod = in.next();
         antigop = controller.ConsultarProduto(cod);
         if (antigop == null) {
             System.out.println("Produto não encontrado");
@@ -127,7 +131,7 @@ public class ProdutoView {
             System.out.println("Informe a nova descrição desse produto: ");
             novadesc = in.nextLine();
             System.out.println("Informe o novo código desse produto: ");
-            novocod = in.nextInt();
+            novocod = in.next();
             System.out.println("Informe o novo preço desse produto: ");
             novopreco = in.nextDouble();
             System.out.println("Informe o novo peso desse produto: ");
@@ -138,7 +142,8 @@ public class ProdutoView {
         }
     }
 
-    private void ListarProdutos() {
+    @Override
+    public void Listar() {
         ArrayList<Produto> produtos = controller.ListarProdutos();
         if (produtos.isEmpty() == true) {
             System.out.println("Nenhum produto cadastrado");
