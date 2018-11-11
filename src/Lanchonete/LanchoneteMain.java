@@ -1,4 +1,4 @@
-package Lanchonete;
+﻿package Lanchonete;
 
 import Lanchonete.Model.Administrador;
 import Lanchonete.View.FuncionarioView;
@@ -53,9 +53,5 @@ public class LanchoneteMain {
     }
 }
 
-/*O QUE FALTA:
-1-Implementar mais 1 padrão de projeto 
-2-Atualizar a UML
-3-Matar moscas com um canhão
-4-Remover o Herobrine
- */
+
+ 
