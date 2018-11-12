@@ -1,4 +1,4 @@
-﻿package Lanchonete;
+package Lanchonete;
 
 import Lanchonete.Model.Administrador;
 import Lanchonete.View.FuncionarioView;
@@ -52,6 +52,3 @@ public class LanchoneteMain {
         } while (op != 4);
     }
 }
-
-
- 

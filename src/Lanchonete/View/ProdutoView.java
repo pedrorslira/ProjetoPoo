@@ -4,9 +4,9 @@ import Lanchonete.Controller.ProdutoController;
 import Lanchonete.Controller.FuncionarioController;
 import Lanchonete.Model.Produto;
 import Lanchonete.Model.Funcionario;
-import Lanchonete.Model.Strategy.CalculoPreco1;
-import Lanchonete.Model.Strategy.CalculoPreco3;
-import Lanchonete.Model.Strategy.CalculoPreco5;
+import Lanchonete.Model.Strategy.CalculoPreco1kg;
+import Lanchonete.Model.Strategy.CalculoPreco3kg;
+import Lanchonete.Model.Strategy.CalculoPreco5kg;
 import Lanchonete.Model.Strategy.Strategy;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -80,13 +80,13 @@ public class ProdutoView extends Telas {
         peso = in.nextDouble();
         Produto p = new Produto(codigo, nome, descricao, preco, peso);
         if(peso > 1){
-            calculo = new CalculoPreco1();
+            calculo = new CalculoPreco1kg();
             calculo.aplicar(p);
         } else if(peso > 3){
-            calculo = new CalculoPreco3();
+            calculo = new CalculoPreco3kg();
             calculo.aplicar(p);         
         } else if(peso > 5){
-            calculo = new CalculoPreco5();
+            calculo = new CalculoPreco5kg();
             calculo.aplicar(p);           
         }
         controller.CadastrarProduto(p);
