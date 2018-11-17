@@ -7,9 +7,9 @@ import Lanchonete.DAO.PedidoBridge;
 public class PedidoController {
 
     private PedidoBridge interfacePedido;
-
+    
     public PedidoController() {
-        this.interfacePedido = PedidoFactory.TipoArmazenamento(1);
+        this.interfacePedido = PedidoFactory.TipoArmazenamento(PedidoFactory.Tipo.ARRAY_LIST);
     }
 
     public void CadastrarPedido(Pedido p) {

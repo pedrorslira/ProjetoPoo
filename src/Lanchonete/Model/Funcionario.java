@@ -56,4 +56,9 @@ public class Funcionario extends Pessoa {
         return cod;
     }
 
+    public void BonusSalario(double precoTotalPedido) {
+        double bonus = precoTotalPedido * 0.02; //bônus de 2% de cada venda no salário do funcionário
+        this.setSalario(this.getSalario() + bonus);
+    }
+
 }

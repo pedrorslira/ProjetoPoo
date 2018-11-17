@@ -4,11 +4,16 @@ import Lanchonete.DAO.FuncionarioDAO;
 
 public class FuncionarioFactory {
 
-    public static FuncionarioDAO TipoArmazenamento(int tipo) {
-        switch (tipo) {
-            case 1: //ArrayList
+    public enum Tipo{
+        ARRAY_LIST,
+        ARQUIVO
+    }
+    
+    public static FuncionarioDAO TipoArmazenamento (Tipo t) {
+        switch (t) {
+            case ARRAY_LIST: 
                 return FuncionarioDAO.GetInstanciaFuncionario();
-            case 2: //Arquivo
+            case ARQUIVO: 
                 throw new UnsupportedOperationException();
             default:
                 return null;

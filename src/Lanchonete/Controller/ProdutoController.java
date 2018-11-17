@@ -9,7 +9,7 @@ public class ProdutoController {
     private ProdutoBridge interfaceProduto;
 
     public ProdutoController() {
-        this.interfaceProduto = ProdutoFactory.TipoArmazenamento(1);
+        this.interfaceProduto = ProdutoFactory.TipoArmazenamento(ProdutoFactory.Tipo.ARRAY_LIST);
     }
 
     public void CadastrarProduto(Produto p) {

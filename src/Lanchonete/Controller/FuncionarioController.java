@@ -9,7 +9,7 @@ public class FuncionarioController {
     private FuncionarioBridge interfaceFuncionario;
 
     public FuncionarioController() {
-        this.interfaceFuncionario = FuncionarioFactory.TipoArmazenamento(1);
+        this.interfaceFuncionario = FuncionarioFactory.TipoArmazenamento(FuncionarioFactory.Tipo.ARRAY_LIST);
     }
 
     public void CadastrarFuncionario(Funcionario f) {

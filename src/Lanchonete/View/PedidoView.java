@@ -8,9 +8,7 @@ import Lanchonete.Model.Produto;
 import Lanchonete.Model.Funcionario;
 import Lanchonete.Model.Item;
 import Lanchonete.Model.FormaDePagamento;
-import Lanchonete.Model.StatusAlterado;
-import Lanchonete.Model.StatusEfetuado;
-import Lanchonete.Model.StatusNovo;
+import Lanchonete.Model.State.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -57,27 +55,37 @@ public class PedidoView extends Telas {
         } while (op != 6);
     }
 
-    @Override
-    public void Cadastrar() {
-        int qtd_produto, qtd_produto_total, op, qtd_aux = 0;
-        double salario_func, bonus;
-        String codigo, codigo_produto, codigo_funcionario;
-        Date data = new Date();
-        FormaDePagamento formapgto = FormaDePagamento.NAO_INFORMADO;
-        Item item;
+    public Funcionario FuncionarioExistente() { //verificar se o funcionário trabalha na lanchonete
+        String codigo;
         Funcionario func;
-        Produto produto, produto_aux;
-        Pedido p = new Pedido(data, formapgto);
         Scanner in = new Scanner(System.in);
-        System.out.println("Informe o código do funcionário responsável pelo atendimento"); //verificar se o funcionário trabalha na lanchonete
-        codigo_funcionario = in.next();
-        func = controllerFuncionario.ConsultarFuncionario(codigo_funcionario);
+        System.out.println("Informe o código do funcionário responsável pelo atendimento");
+        codigo = in.next();
+        func = controllerFuncionario.ConsultarFuncionario(codigo);
         if (func == null) {
             System.out.println("Nenhum funcionário tem esse código");
-            return;
-        } //se o funcionário trabalhar na lanchonete:
-        p.setStatus(new StatusNovo());
-        System.out.println(p.getStatus().estado());
+            return null;
+        }
+        return func;
+    }
+
+    public Produto ProdutoExistente() { //verificar se o produto existe na lanchonete
+        String codigo;
+        Produto produto;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Informe o código do produto a ser adicionado");
+        codigo = in.next();
+        produto = controllerProduto.ConsultarProduto(codigo);
+        if (produto == null) {
+            System.out.println("O código do produto informado não existe no sistema");
+            return null;
+        }
+        return produto;
+    }
+
+    public void TelaFormaDePagamento(Pedido p) {
+        int op;
+        Scanner in = new Scanner(System.in);
         do {
             System.out.println("Informe a forma de pagamento: ");
             System.out.println("1- À vista");
@@ -85,32 +93,36 @@ public class PedidoView extends Telas {
             System.out.println("3- Débito");
             op = in.nextInt();
         } while (op < 1 || op > 3);
-        switch (op) {
-            case 1:
-                formapgto = FormaDePagamento.A_VISTA;
-                break;
-            case 2:
-                formapgto = FormaDePagamento.CREDITO;
-                break;
-            case 3:
-                formapgto = FormaDePagamento.DEBITO;
-                break;
-            default:
-                break;
+        p.setFormapgto(op);
+    }
+
+    @Override
+    public void Cadastrar() {
+        int op, qtd_produto, qtd_produto_total, qtd_aux = 0;
+        String codigo;
+        FormaDePagamento formapgto = FormaDePagamento.NAO_INFORMADO;
+        Item item;
+        Produto produto;
+        Funcionario func;
+        Pedido p = new Pedido(formapgto);
+        State status = new StatusNovo();
+        Scanner in = new Scanner(System.in);
+
+        func = FuncionarioExistente();
+        if (func == null) {
+            return;
         }
+        System.out.println(status.estado(p));
+        TelaFormaDePagamento(p);
         do {
-            System.out.println("Informe o código do produto a ser adicionado"); //verificar se o produto existe na lanchonete
-            codigo_produto = in.next();
-            produto = controllerProduto.ConsultarProduto(codigo_produto);
+            produto = ProdutoExistente();
             if (produto == null) {
-                System.out.println("O código do produto informado não existe no sistema");
                 return;
-            } //se o produto existir na lanchonete:
+            }
             do {
-                qtd_produto_total = controllerProduto.ConsultarQtdProduto(codigo_produto);
+                qtd_produto_total = controllerProduto.ConsultarQtdProduto(produto.getCodigo());
                 if (qtd_produto_total == 0) {
-                    System.out.print("\n");
-                    System.out.println("O produto buscado está esgotado");
+                    System.out.println("O produto buscado está esgotado\n");
                     return;
                 }
                 System.out.println("Quantidade do produto buscado em estoque: " + qtd_produto_total);
@@ -119,9 +131,9 @@ public class PedidoView extends Telas {
             } while (qtd_produto > qtd_produto_total);
             item = new Item(qtd_produto);
             do { //adicionar produto em item e retirar o produto do estoque quando ele for levado pelo cliente
-                produto_aux = controllerProduto.ConsultarProduto(codigo_produto);
-                item.AddProduto(produto_aux);
-                controllerProduto.RemoverProduto(codigo_produto);
+                produto = controllerProduto.ConsultarProduto(produto.getCodigo());
+                item.AddProduto(produto);
+                controllerProduto.RemoverProduto(produto.getCodigo());
                 qtd_aux++;
             } while (qtd_aux != qtd_produto);
             qtd_aux = 0;
@@ -131,21 +143,16 @@ public class PedidoView extends Telas {
             System.out.println("2- Finalizar a Compra");
             op = in.nextInt();
         } while (op == 1);
-        p.setStatus(new StatusEfetuado());
-        data = new Date();
+        status = new StatusEfetuado();
+        System.out.println(status.estado(p));
+        Date data = new Date();
         p.setData(data);
-        p.setFormapgto(formapgto);
         p.setCodigo(p.NovoCodigo()); //randomizar o código de pedido
         controllerPedido.CadastrarPedido(p);
-        p.setStatus(new StatusEfetuado());
-        System.out.println(p.getStatus().estado());
         codigo = p.getCodigo();
         System.out.println("Código do Pedido: " + codigo);
         func.setQtdVendas(func.getQtdVendas() + 1);
-        bonus = p.getPrecoTotal() * 0.02; //bônus de 2% de cada venda no salário do funcionário
-        salario_func = func.getSalario();
-        salario_func += bonus;
-        func.setSalario(salario_func);
+        func.BonusSalario(p.getPrecoTotal());
     }
 
     @Override
@@ -178,7 +185,7 @@ public class PedidoView extends Telas {
         } else {
             System.out.println("Código: " + p.getCodigo());
             System.out.println("Data: " + p.getData());
-            System.out.println("Status: " + p.getStatus().estado());
+            System.out.println("Status: " + p.getStatus());
             System.out.println("Forma de Pagamento: " + p.getFormapgto());
             System.out.print("\n");
             System.out.println("Compras: ");
@@ -198,40 +205,20 @@ public class PedidoView extends Telas {
     @Override
     public void Alterar() {
         Scanner in = new Scanner(System.in);
-        int op;
         String codigo;
-        FormaDePagamento novaforma_pgto;
         Pedido novop, antigop;
+        State status = new StatusAlterado();
         System.out.println("Informe o código do pedido a ser modificado: ");
         codigo = in.next();
         antigop = controllerPedido.ConsultarPedido(codigo);
         if (antigop == null) {
             System.out.println("Pedido não encontrado");
         } else {
-            do {
-                System.out.println("Informe a nova forma de pagamento do pedido");
-                System.out.println("1- À vista");
-                System.out.println("2- Crédito");
-                System.out.println("3- Débito");
-                op = in.nextInt();
-            } while (op < 1 || op > 3);
-            switch (op) {
-                case 1:
-                    novaforma_pgto = FormaDePagamento.A_VISTA;
-                    break;
-                case 2:
-                    novaforma_pgto = FormaDePagamento.CREDITO;
-                    break;
-                default:
-                    novaforma_pgto = FormaDePagamento.DEBITO;
-                    break;
-            }
-            novop = new Pedido(antigop.getData(), novaforma_pgto);
+            TelaFormaDePagamento(antigop);
+            novop = new Pedido(antigop.getFormapgto());
             novop.setCodigo(codigo);
-            novop.setStatus(new StatusAlterado());
-            System.out.println(novop.getStatus().estado());
+            System.out.println(status.estado(novop));
             controllerPedido.AlterarPedido(codigo, novop);
-
         }
     }
 
@@ -244,7 +231,7 @@ public class PedidoView extends Telas {
             for (Pedido p : pedidos) {
                 System.out.println("Código: " + p.getCodigo());
                 System.out.println("Data do Pedido: " + p.getData());
-                System.out.println("Status: " + p.getStatus().estado());
+                System.out.println("Status: " + p.getStatus());
                 System.out.println("Forma de Pagamento: " + p.getFormapgto());
                 for (Item i : p.getItens()) {
                     System.out.println("Nome do Produto: " + i.getProduto().get(0).getNome());

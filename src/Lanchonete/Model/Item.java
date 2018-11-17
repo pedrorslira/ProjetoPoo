@@ -31,7 +31,7 @@ public class Item {
     public double PrecoTotalItem() {
         double preco_t = 0;
         for (Produto p : this.produto) {
-            preco_t += p.getPreco();
+            preco_t = p.getPreco() + p.getPrecoEmbalagem();
         }
         return preco_t;
     }

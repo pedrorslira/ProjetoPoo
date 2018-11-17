@@ -4,10 +4,6 @@ import Lanchonete.Controller.ProdutoController;
 import Lanchonete.Controller.FuncionarioController;
 import Lanchonete.Model.Produto;
 import Lanchonete.Model.Funcionario;
-import Lanchonete.Model.Strategy.CalculoPreco1kg;
-import Lanchonete.Model.Strategy.CalculoPreco3kg;
-import Lanchonete.Model.Strategy.CalculoPreco5kg;
-import Lanchonete.Model.Strategy.Strategy;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -66,7 +62,6 @@ public class ProdutoView extends Telas {
         String codigo;
         String nome, descricao;
         double preco, peso;
-        Strategy calculo;
         Scanner in = new Scanner(System.in);
         System.out.println("Informe o nome do produto");
         nome = in.nextLine();
@@ -74,24 +69,14 @@ public class ProdutoView extends Telas {
         descricao = in.nextLine();
         System.out.println("Informe o código do produto");
         codigo = in.next();
-        System.out.println("Informe o preço base do produto");
+        System.out.println("Informe o preço do produto");
         preco = in.nextDouble();
         System.out.println("Informe o peso do produto (em kg)");
         peso = in.nextDouble();
         Produto p = new Produto(codigo, nome, descricao, preco, peso);
-        if(peso > 1){
-            calculo = new CalculoPreco1kg();
-            calculo.aplicar(p);
-        } else if(peso > 3){
-            calculo = new CalculoPreco3kg();
-            calculo.aplicar(p);         
-        } else if(peso > 5){
-            calculo = new CalculoPreco5kg();
-            calculo.aplicar(p);           
-        }
+        p.NovoPreco();
         controller.CadastrarProduto(p);
         System.out.println("Produto cadastrado com sucesso!");
-        System.out.println("Novo preco do produto: " + p.getPreco());
     }
 
     @Override
@@ -126,6 +111,8 @@ public class ProdutoView extends Telas {
             System.out.println("Código: " + p.getCodigo());
             System.out.println("Preço: " + p.getPreco());
             System.out.println("Peso: " + p.getPeso());
+            System.out.println("Categoria: " + p.getCategoria());
+            System.out.println("Preço da embalagem: " + p.getPrecoEmbalagem());
         }
     }
 
@@ -152,6 +139,7 @@ public class ProdutoView extends Telas {
             System.out.println("Informe o novo peso desse produto: ");
             novopeso = in.nextDouble();
             novop = new Produto(novocod, novonome, novadesc, novopreco, novopeso);
+            novop.NovoPreco();
             controller.AlterarProduto(cod, novop);
             System.out.println("Produto alterado com sucesso!");
         }
@@ -167,8 +155,10 @@ public class ProdutoView extends Telas {
                 System.out.println("Código: " + p.getCodigo());
                 System.out.println("Nome: " + p.getNome());
                 System.out.println("Descrição: " + p.getDescricao());
-                System.out.println("Peso: " + p.getPeso());
                 System.out.println("Preço: " + p.getPreco());
+                System.out.println("Peso: " + p.getPeso());
+                System.out.println("Categoria: " + p.getCategoria());
+                System.out.println("Preço da embalagem: " + p.getPrecoEmbalagem());
             }
         }
     }

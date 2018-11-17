@@ -2,6 +2,7 @@ package Lanchonete.Model;
 
 import java.util.Date;
 import java.util.ArrayList;
+import Lanchonete.Model.State.State.Status;
 
 public class Pedido {
 
@@ -11,8 +12,7 @@ public class Pedido {
     private FormaDePagamento formapgto;
     private ArrayList<Item> itens;
 
-    public Pedido(Date data, FormaDePagamento formapgto) {
-        this.data = data;
+    public Pedido(FormaDePagamento formapgto) {
         this.formapgto = formapgto;
         this.itens = new ArrayList<>();
     }
@@ -45,8 +45,20 @@ public class Pedido {
         return formapgto;
     }
 
-    public void setFormapgto(FormaDePagamento formapgto) {
-        this.formapgto = formapgto;
+    public void setFormapgto(int op) {
+        switch (op) {
+            case 1:
+                this.formapgto = FormaDePagamento.A_VISTA;
+                break;
+            case 2:
+                this.formapgto = FormaDePagamento.CREDITO;
+                break;
+            case 3:
+                this.formapgto = FormaDePagamento.DEBITO;
+                break;
+            default:
+                break;
+        }
     }
 
     public ArrayList<Item> getItens() {

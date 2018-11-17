@@ -1,5 +1,8 @@
 package Lanchonete.Model;
 
+import Lanchonete.Model.Strategy.Strategy.Categoria;
+import Lanchonete.Model.Strategy.*;
+
 public class Produto {
 
     private String codigo;
@@ -7,6 +10,8 @@ public class Produto {
     private String descricao;
     private double preco;
     private double peso;
+    private double preco_embalagem;
+    private Categoria categoria;
 
     public Produto(String codigo, String nome, String descricao, double preco, double peso) {
         this.codigo = codigo;
@@ -54,5 +59,43 @@ public class Produto {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public double getPrecoEmbalagem() {
+        return preco_embalagem;
+    }
+
+    public void setPrecoEmbalagem(double preco_embalagem) {
+        this.preco_embalagem = preco_embalagem;
+    }
+
+    public double getPreco_embalagem() {
+        return preco_embalagem;
+    }
+
+    public void setPreco_embalagem(double preco_embalagem) {
+        this.preco_embalagem = preco_embalagem;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+    
+    public void NovoPreco() {
+        Strategy calculo;        
+        if (peso >= 1) {
+            calculo = new CalculoPrecoLeve();
+            calculo.aplicar(this);
+        } else if (peso > 3) {
+            calculo = new CalculoPrecoMedio();
+            calculo.aplicar(this);
+        } else if (peso > 5) {
+            calculo =  new CalculoPrecoPesado();
+            calculo.aplicar(this);
+        }
     }
 }
